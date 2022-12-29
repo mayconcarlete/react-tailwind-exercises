@@ -17,7 +17,16 @@ export const loginReducer = (state: LoginState = initialState, action: LoginActi
     return {loading: false, error: action.payload, data:{email: undefined, jwt: undefined}}
   }
   else if(action.type === LoginEnum.LOGIN_SUCCESS){
-    return {loading: false, error: undefined, data: {email: action.payload.email, jwt: action.payload.jwt}}
+    return {
+      loading: false,
+      error: undefined,
+      data: {
+        email: action.payload.email,
+        jwt: action.payload.jwt,
+        name: action.payload.name,
+        lastName: action.payload.name,
+        profilePhoto: action.payload.profilePhoto
+    }}
   }
   return state
 }

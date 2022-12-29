@@ -1,24 +1,24 @@
-import { useState, useEffect } from "react"
-import {GoogleOAuthProvider, GoogleLogin, useGoogleLogin, TokenResponse, googleLogout} from "@react-oauth/google"
+import { useState } from "react"
+import { useGoogleLogin} from "@react-oauth/google"
 import axios from 'axios'
+import { useDispatch } from "react-redux"
+import {googleLogin} from "../redux/actions"
+import {useTypedSelector} from "../redux/hooks/useTypedSelector"
 
-const clientId="169818476393-p6k4htsmte2icvs39706u80b1huipqte.apps.googleusercontent.com"
+
 export default function NavBar() {
   const [dropdown, setDropdown] = useState<boolean>(false)
+  const dispatch = useDispatch()
+
+  const { data } = useTypedSelector( state => state.login)
   const onClick = () => {
     setDropdown(!dropdown)
   }
 
-  const googleLogin = useGoogleLogin({
+  const googleAuth = useGoogleLogin({
     flow: 'auth-code',
     onSuccess: async (codeResponse) => {
-        console.log(codeResponse);
-        const tokens = await axios.post(
-            'http://localhost:3001/auth/google', {
-                code: codeResponse.code,
-            });
-
-        console.log(tokens);
+        dispatch(googleLogin(codeResponse.code) as any) // calls redux action
     },
     onError: errorResponse => console.log(errorResponse),
   });
@@ -46,13 +46,8 @@ export default function NavBar() {
             <li className="flex md:pr-4 sm:p-2">SignUp</li>
           </ul>
       </nav>
-      <button onClick={googleLogin}>Continue with Google</button>
+      <button onClick={googleAuth}>Continue with Google</button>
       <button onClick={checkJwt}>Click to check jwt</button>
-    {/* <GoogleLogin
-     onSuccess={onSuccess}
-     onError={() => console.log("pqp")}
-    /> */}
-
   </div>
     </div>
   </header>

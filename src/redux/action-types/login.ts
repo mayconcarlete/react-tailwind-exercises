@@ -9,15 +9,21 @@ export interface LoginState {
   error?: string
   data: {
     email?: string
+    name?: string
+    lastName?: string
     jwt?: string
+    profilePhoto?: string
   }
 }
 
 export interface LoginActionSuccess {
   type: LoginEnum.LOGIN_SUCCESS,
-  payload: {
-    email: string,
-    jwt: string
+  payload:{
+    email?: string
+    name?: string
+    lastName?: string
+    jwt?: string
+    profilePhoto?: string
   }
 }
 
